@@ -8,8 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AccessToken : NSObject
-@property (strong, nonatomic) NSString *token;
-@property (strong, nonatomic) NSDate *expirationDate;
-@property (strong, nonatomic) NSString *userId;
+@interface AccessToken : NSObject <NSCoding>
+
+@property (strong, readonly, nonatomic) NSString *token;
+@property (assign, readonly, nonatomic) NSInteger expiresIn;
+@property (strong, readonly, nonatomic) NSString *userId;
+@property (assign, readonly, nonatomic) NSTimeInterval created;
+@property (strong, readonly, nonatomic) NSArray *scope;
+@property (assign, readonly, nonatomic) BOOL isExpired;
+
+- (instancetype)initWithAccessToken:(NSString *)token expiresIn:(NSInteger)expiresIn userId:(NSString *)userId scope:(NSArray *)scope;
+
 @end

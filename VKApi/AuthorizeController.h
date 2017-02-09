@@ -11,12 +11,14 @@
 @class AccessToken;
 @protocol AuthorizeControllerDelegate <NSObject>
 
--(void)authorizeCompleteWithToken:(AccessToken *)accessToken;
+- (void)authorizeCompleteWithToken:(AccessToken *)accessToken;
 
 @end
 
 @interface AuthorizeController : UIViewController
+
 @property (weak, nonatomic) id <AuthorizeControllerDelegate> delegate;
 @property (strong, nonatomic) NSString *clientId;
 @property (strong, nonatomic) NSArray *scope;
+
 @end

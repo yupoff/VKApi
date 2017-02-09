@@ -24,7 +24,7 @@
     return self;
 }
 
--(NSArray <NewsResponseModel *> *)getArrayNewsResponseModel:(NSArray *)array
+- (NSArray <NewsResponseModel *> *)getArrayNewsResponseModel:(NSArray *)array
 {
     NSMutableArray <NewsResponseModel *> *arrayNewsResponseModel = [[NSMutableArray <NewsResponseModel *>  alloc]init];
     for (NSDictionary *dict in array) {
@@ -36,7 +36,7 @@
     return [arrayNewsResponseModel copy];
 }
 
--(NSArray <ProfileResponseModel *> *)getArrayProfileResponseModel:(NSArray *)array
+- (NSArray <ProfileResponseModel *> *)getArrayProfileResponseModel:(NSArray *)array
 {
     NSMutableArray <ProfileResponseModel *> *arrayProfileResponseModel = [[NSMutableArray <ProfileResponseModel *>  alloc]init];
     for (NSDictionary *dict in array) {
@@ -48,7 +48,7 @@
     return [arrayProfileResponseModel copy];
 }
 
--(NSArray <GroupResponseModel *> *)getArrayGroupResponseModel:(NSArray *)array
+- (NSArray <GroupResponseModel *> *)getArrayGroupResponseModel:(NSArray *)array
 {
     NSMutableArray <GroupResponseModel *> *arrayGroupResponseModel = [[NSMutableArray <GroupResponseModel *>  alloc]init];
     for (NSDictionary *dict in array) {

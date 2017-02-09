@@ -10,6 +10,7 @@
 #import "Photo.h"
 
 @implementation NewsResponseModel
+
 - (instancetype)initWithDictionary:(NSDictionary *)dict
 {
     self = [super init];
@@ -30,4 +31,5 @@
     }
     return self;
 }
+
 @end

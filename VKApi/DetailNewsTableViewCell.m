@@ -25,6 +25,12 @@ static NSString *const CELL_ID = @"PhotosCollectionViewCell";
 
 @implementation DetailNewsTableViewCell
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    // Initialization code
+}
+
 - (void)setNews:(News *)news
 {
     _news = news;
@@ -49,19 +55,6 @@ static NSString *const CELL_ID = @"PhotosCollectionViewCell";
     [self.collectionView reloadData];
 }
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    // Initialization code
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
 #pragma mark - Collection view data source
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -75,6 +68,8 @@ static NSString *const CELL_ID = @"PhotosCollectionViewCell";
     [cell.photoImageView setImageWithURL:[NSURL URLWithString:self.news.photos[indexPath.row].photoSmall]];
     return cell;
 }
+
+#pragma mark - Collection view delegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {

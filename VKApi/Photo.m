@@ -9,6 +9,7 @@
 #import "Photo.h"
 
 @implementation Photo
+
 - (instancetype)initWithDictionary:(NSDictionary *)dict
 {
     self = [super init];
@@ -21,4 +22,5 @@
     }
     return self;
 }
+
 @end

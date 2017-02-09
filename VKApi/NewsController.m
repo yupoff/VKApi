@@ -8,16 +8,18 @@
 
 #import "News.h"
 #import "NewsController.h"
-#import "NewsDataSource.h"
-#import "NewsTableViewCell.h"
-#import "NewsfeedResponseModel.h"
 #import "DetailController.h"
+#import "NewsTableViewCell.h"
 
-static NSString *const CELL_ID = @"NewsTableViewCell";
-static NSString *const NEXT_CONTROLLER_SEGUE_ID = @"detailControllerSegue";
+#import "NewsService.h"
+
+#import "ServerManager.h"
+
+static NSString *const kCellId = @"NewsTableViewCell";
+static NSString *const kDetailControllerSegueId = @"detailControllerSegue";
 
 @interface NewsController ()
-@property (strong, nonatomic) NewsDataSource *newsDataSource;
+@property (strong, nonatomic) NewsService *newsService;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (assign, nonatomic) BOOL loadMoreStatus;
 
@@ -25,24 +27,53 @@ static NSString *const NEXT_CONTROLLER_SEGUE_ID = @"detailControllerSegue";
 
 @implementation NewsController
 
+#pragma mark - Lifecycle Methods
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self.tableView setRowHeight:UITableViewAutomaticDimension];
     [self.tableView setEstimatedRowHeight:318.0];
 
-    self.newsDataSource = [[NewsDataSource alloc] init];
+    self.newsService = [[NewsService alloc] init];
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Выход" style:UIBarButtonItemStyleDone target:self action:@selector(logout:)];
 
     [self.tableView.tableFooterView setHidden:YES];
 }
 
-- (void)didReceiveMemoryWarning
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newsLoaded:) name:kNewsServiceNewsLoadedNotification object:nil];
 }
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Data Loading methods
+
+- (void)loadNews
+{
+    [self.newsService loadNews];
+}
+
+- (void)newsLoaded:(NSNotification *)notification
+{
+    if (self.loadMoreStatus) {
+        self.loadMoreStatus = NO;
+        [self.activityIndicator stopAnimating];
+        [self.tableView.tableFooterView setHidden:YES];
+    }
+    [self.tableView reloadData];
+}
+
+#pragma Helpers Methods
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -63,51 +94,44 @@ static NSString *const NEXT_CONTROLLER_SEGUE_ID = @"detailControllerSegue";
         self.loadMoreStatus = YES;
         [self.activityIndicator startAnimating];
         [self.tableView.tableFooterView setHidden:NO];
-        [self.newsDataSource updateDataSource:^(NSArray *dataSource) {
-          [self.tableView reloadData];
-          self.loadMoreStatus = NO;
-          [self.activityIndicator stopAnimating];
-          [self.tableView.tableFooterView setHidden:YES];
-        }
-            onFailure:^(NSError *error){
-
-            }];
+        [self loadNews];
     }
 }
 
+#pragma mark - Navigation Methods
+
 - (void)logout:(id)sender
 {
+    [ServerManager logout];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSIndexPath *indexPath = sender;
     DetailController *detailVC = [segue destinationViewController];
-    detailVC.news = [self.newsDataSource getNewsAtIndexPath:indexPath];
+    detailVC.news = [self.newsService getNewsAtIndex:indexPath.row];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.newsDataSource.count;
+    return self.newsService.news.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NewsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CELL_ID];
-    cell.news = [self.newsDataSource getNewsAtIndexPath:indexPath];
+    NewsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kCellId];
+    cell.news = [self.newsService getNewsAtIndex:indexPath.row];
     return cell;
 }
 
 #pragma mark - Table view delegate
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self performSegueWithIdentifier:NEXT_CONTROLLER_SEGUE_ID sender:indexPath];
+    [self performSegueWithIdentifier:kDetailControllerSegueId sender:indexPath];
 }
-
-
 
 @end

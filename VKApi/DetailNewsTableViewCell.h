@@ -11,5 +11,7 @@
 @class News;
 
 @interface DetailNewsTableViewCell : UITableViewCell
+
 @property (strong, nonatomic) News *news;
+
 @end

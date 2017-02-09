@@ -11,10 +11,12 @@
 @class Photo;
 
 @interface NewsResponseModel : NSObject
+
 @property (assign, nonatomic) NSNumber *sourceId;
 @property (strong, nonatomic) NSNumber *date;
 @property (strong, nonatomic) NSString *text;
 @property (strong, nonatomic) NSArray <Photo *> *photos;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict;
+
 @end

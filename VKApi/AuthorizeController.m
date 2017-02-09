@@ -50,12 +50,12 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)dealloc
+- (void)dealloc
 {
     self.webView.delegate = nil;
 }
 
--(void)actionDone:(UIBarButtonItem *)item
+- (void)actionDone:(UIBarButtonItem *)item
 {
     [self.delegate authorizeCompleteWithToken:self.accessToken];
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -68,6 +68,9 @@
     NSLog(@"%@", [[request URL] host]);
     if ([[[request URL] path] isEqual:@"/blank.html"]) {
         self.accessToken = [[AccessToken alloc]init];
+        NSString *token;
+        NSInteger expiresIn;
+        NSString *userId;
         NSString *query = [[request URL] description];
         NSArray *array = [query componentsSeparatedByString:@"#"];
         
@@ -84,16 +87,18 @@
                 NSString *key = [values firstObject];
                 
                 if ([key isEqualToString:@"access_token"]) {
-                    self.accessToken.token = [values lastObject];
+                    token = [values lastObject];
                 } else if ([key isEqualToString:@"expires_in"])
                 {
-                    NSTimeInterval interval = [[values lastObject] doubleValue];
-                    self.accessToken.expirationDate = [NSDate dateWithTimeIntervalSinceNow:interval];
+                    [[values lastObject] doubleValue];
                 } else if ([key isEqualToString:@"user_id"])
                 {
-                    self.accessToken.userId = [values lastObject];
+                    userId = [values lastObject];
                 }
             }
+        }
+        if (token && userId && expiresIn > 0) {
+            self.accessToken = [[AccessToken alloc] initWithAccessToken:token expiresIn:expiresIn userId:userId scope:self.scope];
         }
         [self actionDone:nil];
         return NO;

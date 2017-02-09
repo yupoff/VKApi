@@ -2,4 +2,5 @@
 platform :ios, '8.0'
 target ‘VKApi’ do
   pod 'AFNetworking'
+  pod 'Realm'
 end

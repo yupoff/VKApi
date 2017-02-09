@@ -10,9 +10,11 @@
 #import "Photo.h"
 
 @interface News : NSObject
+
 @property (strong, nonatomic) NSString *author;
 @property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) NSString *text;
 @property (strong, nonatomic) NSString *avatar;
 @property (strong, nonatomic) NSArray <Photo *> *photos;
+
 @end

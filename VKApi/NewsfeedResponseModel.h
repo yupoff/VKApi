@@ -12,6 +12,7 @@
 #import "GroupResponseModel.h"
 
 @interface NewsfeedResponseModel : NSObject
+
 @property (strong, nonatomic) NSArray <NewsResponseModel *> *items;
 @property (strong, nonatomic) NSArray <ProfileResponseModel *> *profiles;
 @property (strong, nonatomic) NSArray <GroupResponseModel *> *groups;
@@ -20,4 +21,5 @@
 - (instancetype)initWithDictionary:(NSDictionary *)dict;
 - (NSString *)getAuthorNameById:(NSNumber *)profileId;
 - (NSString *)getAvatarById:(NSNumber *)profileId;
+
 @end

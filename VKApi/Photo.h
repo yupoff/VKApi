@@ -17,4 +17,5 @@
 @property (strong, nonatomic) NSNumber *width;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict;
+
 @end

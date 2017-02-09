@@ -5,17 +5,22 @@
 //  Created by Тимур Аюпов on 10.09.16.
 //  Copyright © 2016 Тимур Аюпов. All rights reserved.
 //
-
 #import "ServerManager.h"
-#import "AuthorizeController.h"
-#import "AccessToken.h"
-#import "NewsfeedResponseModel.h"
+
 #import "AFNetworking.h"
 
-static NSString *const VERSION_API = @"5.53";
+#import "AccessToken.h"
+#import "NewsfeedResponseModel.h"
+
+#import "AuthorizeController.h"
+
+#import "NSUserDefaults+TokenHelper.h"
+
+static NSString *const kVersionApi = @"5.53";
+static NSString *const kURL = @"https://api.vk.com/method/";
+static NSString *const kAccessToken = @"acces_token";
 
 @interface ServerManager () <AuthorizeControllerDelegate>
-@property (strong, nonatomic) AccessToken *accessToken;
 @property (strong, nonatomic) AFHTTPSessionManager *requestOperationManager;
 @end
 
@@ -31,15 +36,28 @@ static NSString *const VERSION_API = @"5.53";
     return manager;
 }
 
--(instancetype)init
+- (instancetype)init
 {
     self = [super init];
-    if (self) {
-        NSURL *baseURL =  [NSURL URLWithString:@"https://api.vk.com/method/"];
+    if (self)
+    {
+        NSURL *baseURL =  [NSURL URLWithString:kURL];
         self.requestOperationManager = [[AFHTTPSessionManager alloc]initWithBaseURL:baseURL];
-        self.accessToken = [[AccessToken alloc]init];
     }
     return self;
+}
+
++ (void)tryResumeLastSessionCompletion:(void (^)(AuthorizationState state))completion
+{
+    AccessToken *accessToken = [NSUserDefaults getAccessTokenForKey:kAccessToken];
+    if (!accessToken || accessToken.isExpired)
+    {
+        completion(AuthorizationStateNotAuthorized);
+    }
+    else
+    {
+        completion(AuthorizationStateAuthorized);
+    }
 }
 
 + (void)authorizeUser:(NSArray *)scope
@@ -54,30 +72,67 @@ static NSString *const VERSION_API = @"5.53";
     
 }
 
--(void)getNewsWithParams:(NSDictionary *)params onSuccess:(void (^) (NewsfeedResponseModel *responseModel))success onFailure:(void(^)(NSError *error, NSInteger statusCode))failure
++ (void)logout
 {
+    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    
+    for (NSHTTPCookie *cookie in cookies)
+        if (NSNotFound != [cookie.domain rangeOfString:@"vk.com"].location) {
+            [[NSHTTPCookieStorage sharedHTTPCookieStorage]
+             deleteCookie:cookie];
+        }
+    [NSUserDefaults removeToken:kAccessToken];
+}
+
+- (void)getRequest:(NSString *)method withParams:(NSDictionary *)params onSuccess:(void (^) (id responseObject))success onFailure:(void(^)(NSError *error))failure
+{
+    NSString *token = [self token];
+    if (!token) {
+        return;
+    }
     NSMutableDictionary *mutableParams = [params mutableCopy];
-    [mutableParams setObject:self.accessToken.token forKey:@"access_token"];
-    [mutableParams setObject:VERSION_API forKey:@"v"];
-	[self.requestOperationManager GET:@"newsfeed.get" parameters:mutableParams progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NewsfeedResponseModel *responseModel = [[NewsfeedResponseModel alloc]initWithDictionary:responseObject[@"response"]];
-        success(responseModel);
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
+    [mutableParams setObject:token forKey:@"access_token"];
+    [mutableParams setObject:kVersionApi forKey:@"v"];
+    params = [mutableParams copy];
+	[self.requestOperationManager GET:method parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject)
+    {
+        if (responseObject[@"error"])
+        {
+            failure(nil);
+        }
+        success(responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)
+    {
+        failure(error);
     }];
 }
 
 #pragma mark - AuthorizeControllerDelegate methods
 
--(void)authorizeCompleteWithToken:(AccessToken *)accessToken
+- (void)authorizeCompleteWithToken:(AccessToken *)accessToken
 {
-    if (accessToken) {
-        self.accessToken = accessToken;
+    if (accessToken)
+    {
+        [NSUserDefaults saveAccessToken:accessToken forKey:kAccessToken];
         [self.delegate authorizationComplete];
     }
-    else {
+    else
+    {
         [self.delegate authorizationFailed];
     }
+}
+
+#pragma mark - Helpers Method
+
+- (NSString *)token
+{
+    AccessToken *accessToken = [NSUserDefaults getAccessTokenForKey:kAccessToken];
+    if (accessToken.isExpired) {
+        [ServerManager authorizeUser:accessToken.scope];
+         [NSUserDefaults removeToken:kAccessToken];
+        return nil;
+    }
+    return accessToken.token;
 }
 
 @end

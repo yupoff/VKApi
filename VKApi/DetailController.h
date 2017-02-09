@@ -11,5 +11,7 @@
 @class News;
 
 @interface DetailController : UITableViewController
+
 @property (strong, nonatomic) News *news;
+
 @end

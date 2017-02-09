@@ -9,11 +9,13 @@
 #import "LoginController.h"
 #import "ServerManager.h"
 
-static NSString *const NEXT_CONTROLLER_SEGUE_ID = @"newsControllerSegue";
-static NSString *const TOKEN_KEY = @"5607601";
+static NSString *const kNewsControllerSegueId = @"newsControllerSegue";
+static NSString *const kTokenAppKey = @"5607601";
 static NSArray *SCOPE = nil;
 
 @interface LoginController () < ServerManagerDelegate >
+
+@property (weak, nonatomic) IBOutlet UIButton *logInButton;
 
 @end
 
@@ -26,7 +28,14 @@ static NSArray *SCOPE = nil;
     SCOPE = @[ @"wall", @"friends" ];
 
     [[ServerManager sharedManager] setDelegate:self];
-    [[ServerManager sharedManager] setClientId:TOKEN_KEY];
+    [[ServerManager sharedManager] setClientId:kTokenAppKey];
+    self.logInButton.enabled = NO;
+    [ServerManager tryResumeLastSessionCompletion:^(AuthorizationState state) {
+        if (state == AuthorizationStateAuthorized) {
+            [self startWorking];
+        }
+        self.logInButton.enabled = YES;
+    }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -41,7 +50,7 @@ static NSArray *SCOPE = nil;
 
 - (void)startWorking
 {
-    [self performSegueWithIdentifier:NEXT_CONTROLLER_SEGUE_ID sender:self];
+    [self performSegueWithIdentifier:kNewsControllerSegueId sender:self];
 }
 
 #pragma mark - ServerManager delegate

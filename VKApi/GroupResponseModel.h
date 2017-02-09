@@ -9,9 +9,11 @@
 #import <Foundation/Foundation.h>
 
 @interface GroupResponseModel : NSObject
+
 @property (strong, nonatomic) NSNumber *groupId;
 @property (strong, nonatomic) NSString *name;
 @property (strong, nonatomic) NSString *photo;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict;
+
 @end

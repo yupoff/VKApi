@@ -15,12 +15,18 @@
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 @property (weak, nonatomic) IBOutlet UILabel *authorLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet UILabel *textNewsLabel;
+@property (weak, nonatomic) IBOutlet UITextView *textNewsLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *photoImageView;
 
 @end
 
 @implementation NewsTableViewCell
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    // Initialization code
+}
 
 - (void)setNews:(News *)news
 {
@@ -42,19 +48,6 @@
     {
         [self.photoImageView setImageWithURL:[NSURL URLWithString:[self.news.photos firstObject].photo] placeholderImage:[self getPlaceholder]];
     }
-}
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    // Initialization code
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 - (UIImage *)getPlaceholder

@@ -9,6 +9,7 @@
 #import "ProfileResponseModel.h"
 
 @implementation ProfileResponseModel
+
 - (instancetype)initWithDictionary:(NSDictionary *)dict
 {
     self = [super init];
@@ -20,4 +21,5 @@
     }
     return self;
 }
+
 @end

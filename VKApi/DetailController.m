@@ -10,8 +10,8 @@
 #import "News.h"
 #import "DetailNewsTableViewCell.h"
 
-static NSUInteger const COUNT_ROWS = 1;
-static NSString *const CELL_ID = @"DetailNewsTableViewCell";
+static NSUInteger const kCountRows = 1;
+static NSString *const kCellId = @"DetailNewsTableViewCell";
 
 @interface DetailController ()
 
@@ -33,13 +33,14 @@ static NSString *const CELL_ID = @"DetailNewsTableViewCell";
 
 #pragma mark - Table view data source
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return COUNT_ROWS;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return kCountRows;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    DetailNewsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_ID forIndexPath:indexPath];
+    DetailNewsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellId forIndexPath:indexPath];
     cell.news = self.news;
     return cell;
 }

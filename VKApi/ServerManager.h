@@ -9,13 +9,19 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSUInteger, AuthorizationState) {
+    AuthorizationStateAuthorized,
+    AuthorizationStateNotAuthorized
+};
+
 @class NewsfeedResponseModel;
 
 @protocol ServerManagerDelegate <NSObject>
 
--(void)authorizationComplete;
--(void)authorizationFailed;
--(void)presentViewController:(UIViewController *)controller;
+- (void)authorizationComplete;
+- (void)authorizationFailed;
+- (void)presentViewController:(UIViewController *)controller;
+
 @end
 
 @protocol AuthorizeControllerDelegate;
@@ -28,7 +34,10 @@
 
 + (ServerManager *)sharedManager;
 
--(void)getNewsWithParams:(NSDictionary *)params onSuccess:(void (^) (NewsfeedResponseModel *responseModel))success onFailure:(void(^)(NSError *error, NSInteger statusCode))failure;
-
 + (void)authorizeUser:(NSArray *)scope;
++ (void)tryResumeLastSessionCompletion:(void (^)(AuthorizationState state))completion;
++ (void)logout;
+
+- (void)getRequest:(NSString *)method withParams:(NSDictionary *)params onSuccess:(void (^) (id responseObject))success onFailure:(void(^)(NSError *error))failure;
+
 @end
