@@ -39,6 +39,7 @@ static NSString *const kNewsStartFromKey = @"news_start_from";
         self.count = self.cachedNews.count;
         self.startFrom = [NSUserDefaults getStartFromForKey:kNewsStartFromKey];
         self.params = @{@"filters" : @"post", @"count" : @"20"};
+        self.news = [NSArray array];
     }
     return self;
 }
