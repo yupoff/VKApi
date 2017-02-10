@@ -1,5 +1,5 @@
 //
-//  NSUserDefaults+TokenHelper.h
+//  NSUserDefaults+Helper.h
 //  VKApi
 //
 //  Created by Тимур Аюпов on 09.02.17.
@@ -10,11 +10,17 @@
 
 @class AccessToken;
 
-@interface NSUserDefaults (TokenHelper)
+@interface NSUserDefaults (Helper)
 
 + (void)saveAccessToken:(AccessToken *)accessToken forKey:(NSString *)key;
 
 + (AccessToken *)getAccessTokenForKey:(NSString *)key;
 
 + (void)removeToken:(NSString *)key;
+
++ (void)saveStartFrom:(NSString *)startFrom forKey:(NSString *)key;
+
++ (NSString *)getStartFromForKey:(NSString *)key;
+
++ (void)removeStartFrom:(NSString *)key;
 @end

@@ -28,7 +28,8 @@
 		1E0DB8691D8C17230069433E /* ProfileResponseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E0DB8521D8C17230069433E /* ProfileResponseModel.m */; };
 		1E0DB86A1D8C17230069433E /* ServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E0DB8541D8C17230069433E /* ServerManager.m */; };
 		1EC984FF1E4CEFEE00124FD9 /* NewsService.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC984FE1E4CEFEE00124FD9 /* NewsService.m */; };
-		1EC985071E4D053300124FD9 /* NSUserDefaults+TokenHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC985061E4D053300124FD9 /* NSUserDefaults+TokenHelper.m */; };
+		1EC985071E4D053300124FD9 /* NSUserDefaults+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC985061E4D053300124FD9 /* NSUserDefaults+Helper.m */; };
+		1EC9850A1E4D25AE00124FD9 /* PhotoResponseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC985091E4D25AE00124FD9 /* PhotoResponseModel.m */; };
 		4C3559945F23CB5AC6848EC7 /* libPods-VKApi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B838A4D869FD9D3E7B554B2A /* libPods-VKApi.a */; };
 /* End PBXBuildFile section */
 
@@ -73,8 +74,10 @@
 		1E9960A61D830B7E001F09D9 /* VKApi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VKApi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EC984FD1E4CEFEE00124FD9 /* NewsService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsService.h; sourceTree = "<group>"; };
 		1EC984FE1E4CEFEE00124FD9 /* NewsService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsService.m; sourceTree = "<group>"; };
-		1EC985051E4D053300124FD9 /* NSUserDefaults+TokenHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+TokenHelper.h"; sourceTree = "<group>"; };
-		1EC985061E4D053300124FD9 /* NSUserDefaults+TokenHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+TokenHelper.m"; sourceTree = "<group>"; };
+		1EC985051E4D053300124FD9 /* NSUserDefaults+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+Helper.h"; sourceTree = "<group>"; };
+		1EC985061E4D053300124FD9 /* NSUserDefaults+Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+Helper.m"; sourceTree = "<group>"; };
+		1EC985081E4D25AE00124FD9 /* PhotoResponseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoResponseModel.h; sourceTree = "<group>"; };
+		1EC985091E4D25AE00124FD9 /* PhotoResponseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoResponseModel.m; sourceTree = "<group>"; };
 		23D0F9A9145EFD7F709C9280 /* Pods-FlatStackTestTask.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlatStackTestTask.release.xcconfig"; path = "Pods/Target Support Files/Pods-FlatStackTestTask/Pods-FlatStackTestTask.release.xcconfig"; sourceTree = "<group>"; };
 		5392A59B80737632DDEC7817 /* Pods-VKApi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VKApi.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VKApi/Pods-VKApi.debug.xcconfig"; sourceTree = "<group>"; };
 		B37E741420C9979F4A45DC4B /* Pods-FlatStackTestTask.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlatStackTestTask.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FlatStackTestTask/Pods-FlatStackTestTask.debug.xcconfig"; sourceTree = "<group>"; };
@@ -148,6 +151,8 @@
 				1E0DB84A1D8C17230069433E /* NewsResponseModel.m */,
 				1E0DB8511D8C17230069433E /* ProfileResponseModel.h */,
 				1E0DB8521D8C17230069433E /* ProfileResponseModel.m */,
+				1EC985081E4D25AE00124FD9 /* PhotoResponseModel.h */,
+				1EC985091E4D25AE00124FD9 /* PhotoResponseModel.m */,
 			);
 			name = "Response Models";
 			sourceTree = "<group>";
@@ -227,8 +232,8 @@
 		1EC985011E4D04F800124FD9 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				1EC985051E4D053300124FD9 /* NSUserDefaults+TokenHelper.h */,
-				1EC985061E4D053300124FD9 /* NSUserDefaults+TokenHelper.m */,
+				1EC985051E4D053300124FD9 /* NSUserDefaults+Helper.h */,
+				1EC985061E4D053300124FD9 /* NSUserDefaults+Helper.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -381,6 +386,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E0DB85F1D8C17230069433E /* LoginController.m in Sources */,
+				1EC9850A1E4D25AE00124FD9 /* PhotoResponseModel.m in Sources */,
 				1E0DB85D1D8C17230069433E /* GroupResponseModel.m in Sources */,
 				1EC984FF1E4CEFEE00124FD9 /* NewsService.m in Sources */,
 				1E0DB8621D8C17230069433E /* NewsController.m in Sources */,
@@ -398,7 +404,7 @@
 				1E0DB8551D8C17230069433E /* AccessToken.m in Sources */,
 				1E0DB8601D8C17230069433E /* main.m in Sources */,
 				1E0DB8581D8C17230069433E /* AuthorizeController.m in Sources */,
-				1EC985071E4D053300124FD9 /* NSUserDefaults+TokenHelper.m in Sources */,
+				1EC985071E4D053300124FD9 /* NSUserDefaults+Helper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

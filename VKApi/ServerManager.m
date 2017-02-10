@@ -8,13 +8,14 @@
 #import "ServerManager.h"
 
 #import "AFNetworking.h"
+#import <Realm/Realm.h>
 
 #import "AccessToken.h"
 #import "NewsfeedResponseModel.h"
 
 #import "AuthorizeController.h"
 
-#import "NSUserDefaults+TokenHelper.h"
+#import "NSUserDefaults+Helper.h"
 
 static NSString *const kVersionApi = @"5.53";
 static NSString *const kURL = @"https://api.vk.com/method/";
@@ -72,7 +73,7 @@ static NSString *const kAccessToken = @"acces_token";
     
 }
 
-+ (void)logout
++ (void)clearSession
 {
     NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     

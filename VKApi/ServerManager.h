@@ -36,8 +36,9 @@ typedef NS_ENUM(NSUInteger, AuthorizationState) {
 
 + (void)authorizeUser:(NSArray *)scope;
 + (void)tryResumeLastSessionCompletion:(void (^)(AuthorizationState state))completion;
-+ (void)logout;
 
 - (void)getRequest:(NSString *)method withParams:(NSDictionary *)params onSuccess:(void (^) (id responseObject))success onFailure:(void(^)(NSError *error))failure;
+
++ (void)clearSession;
 
 @end

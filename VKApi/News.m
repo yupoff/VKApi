@@ -10,4 +10,12 @@
 
 @implementation News
 
++ (NSArray *)requiredProperties {
+    return @[@"newsId"];
+}
+
++(NSString *)primaryKey {
+    return @"newsId";
+}
+
 @end

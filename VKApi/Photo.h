@@ -7,15 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Realm/Realm.h>
+@interface Photo : RLMObject
 
-@interface Photo : NSObject
-
-@property (strong, nonatomic) NSNumber *photoId;
+@property (strong, nonatomic) NSNumber<RLMInt> *photoId;
 @property (strong, nonatomic) NSString *photoSmall;
 @property (strong, nonatomic) NSString *photo;
-@property (strong, nonatomic) NSNumber *height;
-@property (strong, nonatomic) NSNumber *width;
-
-- (instancetype)initWithDictionary:(NSDictionary *)dict;
+@property (strong, nonatomic) NSNumber<RLMFloat> *height;
+@property (strong, nonatomic) NSNumber<RLMFloat> *width;
 
 @end
+RLM_ARRAY_TYPE(Photo)

@@ -13,8 +13,6 @@
 
 #import "NewsService.h"
 
-#import "ServerManager.h"
-
 static NSString *const kCellId = @"NewsTableViewCell";
 static NSString *const kDetailControllerSegueId = @"detailControllerSegue";
 
@@ -22,7 +20,7 @@ static NSString *const kDetailControllerSegueId = @"detailControllerSegue";
 @property (strong, nonatomic) NewsService *newsService;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (assign, nonatomic) BOOL loadMoreStatus;
-
+@property (assign, nonatomic) BOOL firstLoad;
 @end
 
 @implementation NewsController
@@ -34,12 +32,21 @@ static NSString *const kDetailControllerSegueId = @"detailControllerSegue";
     [super viewDidLoad];
     [self.tableView setRowHeight:UITableViewAutomaticDimension];
     [self.tableView setEstimatedRowHeight:318.0];
+    
+    self.firstLoad = YES;
+    
+    self.tableView.refreshControl = [[UIRefreshControl alloc] init];
+    [self.tableView.refreshControl addTarget:self
+                            action:@selector(loadNews)
+                  forControlEvents:UIControlEventValueChanged];
+  
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Выход" style:UIBarButtonItemStyleDone target:self action:@selector(logout:)];
+    
+    [self.tableView.tableFooterView setHidden:YES];
 
     self.newsService = [[NewsService alloc] init];
 
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Выход" style:UIBarButtonItemStyleDone target:self action:@selector(logout:)];
-
-    [self.tableView.tableFooterView setHidden:YES];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -47,6 +54,8 @@ static NSString *const kDetailControllerSegueId = @"detailControllerSegue";
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newsLoaded:) name:kNewsServiceNewsLoadedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newsNextLoaded:) name:kNewsServiceNewsNextLoadedNotification object:nil];
+   
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -63,7 +72,27 @@ static NSString *const kDetailControllerSegueId = @"detailControllerSegue";
     [self.newsService loadNews];
 }
 
+- (void)loadNextNews
+{
+    [self.newsService loadNextNews];
+}
+
 - (void)newsLoaded:(NSNotification *)notification
+{
+    if (self.tableView.refreshControl.refreshing)
+    {
+        [self.tableView.refreshControl endRefreshing];
+    }
+    if (self.loadMoreStatus) {
+        self.loadMoreStatus = NO;
+        [self.activityIndicator stopAnimating];
+        [self.tableView.tableFooterView setHidden:YES];
+        self.firstLoad = NO;
+    }
+    [self.tableView reloadData];
+}
+
+- (void)newsNextLoaded:(NSNotification *)notification
 {
     if (self.loadMoreStatus) {
         self.loadMoreStatus = NO;
@@ -94,15 +123,20 @@ static NSString *const kDetailControllerSegueId = @"detailControllerSegue";
         self.loadMoreStatus = YES;
         [self.activityIndicator startAnimating];
         [self.tableView.tableFooterView setHidden:NO];
-        [self loadNews];
-    }
+        if (!self.firstLoad) {
+            [self loadNextNews];
+        }
+        else {
+            [self loadNews];
+        }
+     }
 }
 
 #pragma mark - Navigation Methods
 
 - (void)logout:(id)sender
 {
-    [ServerManager logout];
+    [self.newsService logout];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 

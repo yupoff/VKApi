@@ -7,7 +7,7 @@
 //
 
 #import "NewsResponseModel.h"
-#import "Photo.h"
+#import "PhotoResponseModel.h"
 
 @implementation NewsResponseModel
 
@@ -15,15 +15,16 @@
 {
     self = [super init];
     if (self) {
+        self.newsId = dict[@"post_id"];
         self.sourceId = dict[@"source_id"];
         self.date = dict[@"date"];
         self.text = dict[@"text"];
-        NSMutableArray <Photo *> *mutablePhotos = [NSMutableArray <Photo *> array];
+        NSMutableArray <PhotoResponseModel *> *mutablePhotos = [NSMutableArray <PhotoResponseModel *> array];
         for (NSDictionary *attachmentsDict in dict[@"attachments"])
         {
             if ([attachmentsDict[@"type"] isEqualToString:@"photo"])
             {
-                Photo *photo = [[Photo alloc] initWithDictionary:attachmentsDict[@"photo"]];
+                PhotoResponseModel *photo = [[PhotoResponseModel alloc] initWithDictionary:attachmentsDict[@"photo"]];
                 [mutablePhotos addObject:photo];
             }
         }

@@ -8,14 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@class Photo;
+@class PhotoResponseModel;
 
 @interface NewsResponseModel : NSObject
 
+@property (assign, nonatomic) NSNumber *newsId;
 @property (assign, nonatomic) NSNumber *sourceId;
 @property (strong, nonatomic) NSNumber *date;
 @property (strong, nonatomic) NSString *text;
-@property (strong, nonatomic) NSArray <Photo *> *photos;
+@property (strong, nonatomic) NSArray <PhotoResponseModel *> *photos;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict;
 

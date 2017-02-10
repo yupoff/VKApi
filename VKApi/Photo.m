@@ -10,17 +10,12 @@
 
 @implementation Photo
 
-- (instancetype)initWithDictionary:(NSDictionary *)dict
-{
-    self = [super init];
-    if (self) {
-        self.photoId = dict[@"id"];
-        self.photo = dict[@"photo_604"];
-        self.photoSmall = dict[@"photo_130"];
-        self.height = dict[@"height"];
-        self.width = dict[@"width"];
-    }
-    return self;
++ (NSArray *)requiredProperties {
+    return @[@"photoId"];
+}
+
++(NSString *)primaryKey {
+    return @"photoId";
 }
 
 @end
